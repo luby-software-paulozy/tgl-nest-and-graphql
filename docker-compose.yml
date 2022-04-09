@@ -1,0 +1,22 @@
+version: '2.0'
+
+services:
+
+  api:
+    container_name: prisma_tgl
+    build: .
+    ports:
+    - "3000:3000"
+    volumes:
+      - .:/home/api
+      - /home/api/node_modules
+
+  database:
+    container_name: tgl_database
+    image: postgres
+    ports:
+    - "5430:5432"
+    environment:
+      POSTGRES_DB: tgl_prisma
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres

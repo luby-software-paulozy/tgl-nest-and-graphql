@@ -1,0 +1,115 @@
+type User {
+  id: ID!
+  secure_id: String!
+  name: String!
+  email: String!
+  password: String!
+}
+
+input NewUser {
+  name: String!
+  email: String!
+  password: String!
+}
+
+input UpdateUser {
+  name: String
+  email: String
+  password: String
+}
+
+input AuthInput {
+  email: String!
+  password: String!
+}
+
+type Role {
+  id: ID!
+  name: String!
+}
+
+type AuthType {
+  user: User
+  token: String
+}
+
+type Game {
+  id: ID!
+  secure_id: String!
+  type: String!
+  description: String!
+  range: Int!
+  max_number: Int!
+  price: Float!
+  color: String!
+}
+
+input UpdateGame {
+  type: String
+  description: String
+  range: Int
+  max_number: Int
+  price: Float
+  color: String
+}
+
+input NewGame {
+  type: String!
+  description: String!
+  range: Int!
+  max_number: Int!
+  price: Float!
+  color: String!
+}
+
+type Bet {
+  id: ID!
+  secure_id: String!
+  user_id: String!
+  game_id: String!
+  numbers: String!
+}
+
+input Bets {
+  game_type: String!
+  numbers: String!
+}
+
+input Cart {
+  bets: [Bets]!
+}
+
+input NewBet {
+  cart: Cart!
+}
+
+input UpdateBet {
+  numbers: String
+}
+
+type Query {
+  indexUsers: [User!]!
+  showUser(secure_id: String!): User!
+  showUserByEmail(email: String!): User!
+
+  indexGames: [Game!]!
+  showGame(secure_id: String!): Game!
+
+  indexBets: [Bet!]!
+  showBet(secure_id: String!): Bet!
+}
+
+type Mutation {
+  storeUser(input: NewUser): User!
+  updateUser(secure_id: String!, input: UpdateUser): User!
+  deleteUser(secure_id: String!): Boolean!
+  login(input: AuthInput): AuthType
+
+  storeGame(input: NewGame): Game!
+  updateGame(secure_id: String!, input: UpdateGame): Game!
+  deleteGame(secure_id: String!): Boolean!
+
+  storeBet(input: NewBet!): String!
+  updateBet(secure_id: String!, input: UpdateBet!): Bet!
+  deleteBet(secure_id: String!): Boolean!
+}

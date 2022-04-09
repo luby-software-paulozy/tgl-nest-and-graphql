@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  secure_id  String   @unique @default(uuid())
+  name       String
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+
+  UserRoles UserRoles[]
+  Bet       Bet[]
+  @@map("users")
+}
+
+model Roles {
+  id         Int      @id @default(autoincrement())
+  name       String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  UserRoles UserRoles[]
+  @@map("roles")
+}
+
+model UserRoles {
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id Int
+
+  role     Roles @relation(fields: [roles_id], references: [id], onDelete: Cascade)
+  roles_id Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@id([user_id, roles_id])
+  @@map("user_roles")
+}
+
+model Game {
+  id          Int      @id @default(autoincrement())
+  secure_id   String   @unique @default(uuid())
+  type        String   @unique
+  description String
+  range       Int
+  max_number  Int
+  price       Float
+  color       String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  Bet Bet[]
+  @@map("games")
+}
+
+model Bet {
+  id        Int    @id @default(autoincrement())
+  secure_id String @unique @default(uuid())
+
+  user    User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id Int
+
+  game    Game @relation(fields: [game_id], references: [id], onDelete: Cascade)
+  game_id Int
+
+  numbers String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("bets")
+}
+
+model Cart {
+  min_cart_value Int @id
+
+  @@map("cart")
+}
