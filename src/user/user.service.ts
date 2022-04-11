@@ -6,8 +6,8 @@ import {
 import { PrismaService } from '../prisma/prisma.service';
 import { User } from '@prisma/client';
 import { CreateUserInput } from './dto/create-user.input';
-import { hash } from 'bcrypt';
 import { UpdateUserInput } from './dto/update-use.input';
+import { hash } from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -27,6 +27,7 @@ export class UserService {
       where: { secure_id },
       include: {
         UserRoles: true,
+        Bet: true,
       },
     });
 
@@ -40,7 +41,10 @@ export class UserService {
   async showByEmail(email: string): Promise<User> {
     const user = await this.prisma.user.findFirst({
       where: { email },
-      include: { UserRoles: true },
+      include: {
+        UserRoles: true,
+        Bet: true,
+      },
     });
 
     if (!user) {

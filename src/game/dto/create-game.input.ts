@@ -1,5 +1,5 @@
 import { InputType } from '@nestjs/graphql';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsDecimal, IsInt, IsNotEmpty, IsString } from 'class-validator';
 
 @InputType()
 export class CreateGameInput {
@@ -11,15 +11,15 @@ export class CreateGameInput {
   @IsNotEmpty({ message: 'This field cannot be empty' })
   description: string;
 
-  @IsString()
+  @IsInt()
   @IsNotEmpty({ message: 'This field cannot be empty' })
   range: number;
 
-  @IsString()
+  @IsInt()
   @IsNotEmpty({ message: 'This field cannot be empty' })
   max_number: number;
 
-  @IsString()
+  @IsDecimal()
   @IsNotEmpty({ message: 'This field cannot be empty' })
   price: number;
 

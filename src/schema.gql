@@ -4,6 +4,13 @@ type User {
   name: String!
   email: String!
   password: String!
+  UserRoles: [UserRoles!]!
+  Bet: [UserBets!]!
+}
+
+type UserRoles {
+  user_id: String!
+  roles_id: String!
 }
 
 input NewUser {
@@ -64,6 +71,13 @@ input NewGame {
 
 type Bet {
   id: ID!
+  secure_id: String!
+  user_id: String!
+  game_id: String!
+  numbers: String!
+}
+
+type UserBets {
   secure_id: String!
   user_id: String!
   game_id: String!

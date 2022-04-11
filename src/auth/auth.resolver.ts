@@ -11,6 +11,8 @@ export class AuthResolver {
   public async login(@Args('input') input: AuthInput): Promise<AuthType> {
     const response = await this.authService.validateUser(input);
 
+    console.log(response.user);
+
     return {
       user: response.user,
       token: response.token,

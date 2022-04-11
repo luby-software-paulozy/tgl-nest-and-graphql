@@ -41,12 +41,36 @@ export class NewGame {
   color: string;
 }
 
+export class Bets {
+  game_type: string;
+  numbers: string;
+}
+
+export class Cart {
+  bets: Nullable<Bets>[];
+}
+
+export class NewBet {
+  cart: Cart;
+}
+
+export class UpdateBet {
+  numbers?: Nullable<string>;
+}
+
 export class User {
   id: string;
   secure_id: string;
   name: string;
   email: string;
   password: string;
+  UserRoles: UserRoles[];
+  Bet: UserBets[];
+}
+
+export class UserRoles {
+  user_id: string;
+  roles_id: string;
 }
 
 export class Role {
@@ -78,6 +102,13 @@ export class Bet {
   numbers: string;
 }
 
+export class UserBets {
+  secure_id: string;
+  user_id: string;
+  game_id: string;
+  numbers: string;
+}
+
 export abstract class IQuery {
   abstract indexUsers(): User[] | Promise<User[]>;
 
@@ -88,6 +119,10 @@ export abstract class IQuery {
   abstract indexGames(): Game[] | Promise<Game[]>;
 
   abstract showGame(secure_id: string): Game | Promise<Game>;
+
+  abstract indexBets(): Bet[] | Promise<Bet[]>;
+
+  abstract showBet(secure_id: string): Bet | Promise<Bet>;
 }
 
 export abstract class IMutation {
@@ -112,6 +147,12 @@ export abstract class IMutation {
   ): Game | Promise<Game>;
 
   abstract deleteGame(secure_id: string): boolean | Promise<boolean>;
+
+  abstract storeBet(input: NewBet): string | Promise<string>;
+
+  abstract updateBet(secure_id: string, input: UpdateBet): Bet | Promise<Bet>;
+
+  abstract deleteBet(secure_id: string): boolean | Promise<boolean>;
 }
 
 type Nullable<T> = T | null;
